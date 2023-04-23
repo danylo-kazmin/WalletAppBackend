@@ -1,6 +1,6 @@
 ﻿using WalletAppBackend.Service.Models;
 
-namespace WalletAppBackend.API.Models.Responses
+namespace WalletAppBackend.Service.Models.Responses
 {
     public class GetUserResponse
     {

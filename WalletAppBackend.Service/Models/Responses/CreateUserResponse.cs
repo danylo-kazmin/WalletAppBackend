@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace WalletAppBackend.API.Models.Requests
+namespace WalletAppBackend.Service.Models.Responses
 {
-    public class CreateUserRequest
+    public class CreateUserResponses
     {
         [Required (ErrorMessage = "Name not specified!")]
         public string Username { get; set; }

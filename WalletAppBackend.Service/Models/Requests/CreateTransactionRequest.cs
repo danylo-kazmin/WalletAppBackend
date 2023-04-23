@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace WalletAppBackend.API.Models.Requests
+namespace WalletAppBackend.Service.Models.Requests
 {
     public class CreateTransactionRequest
     {
