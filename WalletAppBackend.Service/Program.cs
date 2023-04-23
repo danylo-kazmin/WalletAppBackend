@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace WalletAppBackend.Service
 {
-    public class Program
+    public static class Program
     {
-        public void Main(string[] args)
+        public static void Main(string[] args)
         {
             Console.WriteLine("Hello World!");
         }
