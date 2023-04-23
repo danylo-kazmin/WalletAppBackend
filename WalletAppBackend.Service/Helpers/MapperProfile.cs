@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using System;
 using WalletAppBackend.Service.Models;
 using WalletAppBackend.Infrastructure.DataAccess.Implementation.Entities;
 
@@ -30,14 +29,18 @@ namespace WalletAppBackend.Service.Helpers
 
             CreateMap<DailyPointsEntity, DailyPoints>()
                 .ForMember(dst => dst.Id, opt => opt.MapFrom(src => src.Id))
-                .ForMember(dst => dst.Points, opt => opt.MapFrom(src => src.Points))
+                .ForMember(dst => dst.Points, opt => opt.MapFrom(src => (long)Math.Round((decimal)src.Points) >= 1000 
+                ? (long)Math.Round((decimal)src.Points) / 1000 + "K" 
+                : ((long)Math.Round((decimal)src.Points)).ToString()))
+                .ForMember(dst => dst.UserId, opt => opt.MapFrom(src => src.UserId))
                 .ForMember(dst => dst.User, opt => opt.MapFrom(src => src.User));
 
             CreateMap<CardBalanceEntity, CardBalance>()
                 .ForMember(dst => dst.Id, opt => opt.MapFrom(src => src.Id))
                 .ForMember(dst => dst.MaxLimit, opt => opt.MapFrom(src => src.MaxLimit))
                 .ForMember(dst => dst.Balance, opt => opt.MapFrom(src => src.Balance))
-                .ForMember(dst => dst.UserId, opt => opt.MapFrom(src => src.UserId));
+                .ForMember(dst => dst.UserId, opt => opt.MapFrom(src => src.UserId))
+                .ForMember(dst => dst.User, opt => opt.MapFrom(src => src.User));
         }
     }
 }
