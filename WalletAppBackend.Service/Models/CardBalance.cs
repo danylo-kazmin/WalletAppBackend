@@ -12,5 +12,6 @@ namespace WalletAppBackend.Service.Models
         public decimal MaxLimit { get; set; }
         public decimal Balance { get; set; }
         public Guid UserId { get; set; }
+        public User User { get; set; }
     }
 }
