@@ -2,7 +2,7 @@
 using System;
 using System.Net;
 using System.Text.Json;
-using System.Threading.Tasks;
+using WalletAppBackend.Service.Helpers;
 
 namespace WalletAppBackend.API.Helpers
 {
@@ -31,7 +31,7 @@ namespace WalletAppBackend.API.Helpers
                     case AppException:
                         response.StatusCode = (int)HttpStatusCode.BadRequest;
                         break;
-                    case KeyNotFoundException:
+                    case Service.Helpers.KeyNotFoundException:
                         response.StatusCode = (int)HttpStatusCode.NotFound;
                         break;
                     default:

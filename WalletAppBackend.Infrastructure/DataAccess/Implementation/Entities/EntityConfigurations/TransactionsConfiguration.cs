@@ -11,7 +11,7 @@ namespace WalletAppBackend.Infrastructure.DataAccess.Implementation.EntityConfig
             builder.ToTable("Transaction").HasKey(p => p.Id);
             builder.Property(p => p.Type).IsRequired().HasColumnName("Type").HasColumnType("nvarchar(30)");
             builder.Property(p => p.Amount).IsRequired().HasColumnName("Amount").HasColumnType("money");
-            builder.Property(p => p.Username).IsRequired().HasColumnName("Username").HasColumnType("nvarchar(100)");
+            builder.Property(p => p.Name).IsRequired().HasColumnName("Name").HasColumnType("nvarchar(100)");
             builder.Property(p => p.Description).HasColumnName("Description").HasColumnType("nvarchar(500)");
             builder.Property(p => p.Date).IsRequired().HasColumnName("Date").HasColumnType("datetimeoffset(7)");
             builder.Property(p => p.Status).IsRequired().HasColumnName("Status").HasColumnType("nvarchar(30)");
@@ -23,7 +23,7 @@ namespace WalletAppBackend.Infrastructure.DataAccess.Implementation.EntityConfig
                 .WithMany()
                 .HasForeignKey(t => t.SenderId)
                 .OnDelete(DeleteBehavior.Restrict);
-            builder.HasOne(t => t.Owner)
+            builder.HasOne(t => t.User)
                 .WithMany()
                 .HasForeignKey(t => t.UserId)
                 .OnDelete(DeleteBehavior.Restrict);

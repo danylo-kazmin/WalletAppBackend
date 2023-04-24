@@ -1,16 +1,9 @@
 ﻿using AutoMapper;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using WalletAppBackend.Infrastructure.DataAccess.Contracts;
 using WalletAppBackend.Infrastructure.DataAccess.Implementation.Entities;
-using WalletAppBackend.Infrastructure.DataAccess.Implementation.Repositories;
 using WalletAppBackend.Service.Models.Responses;
 using WalletAppBackend.Service.Models;
 using WalletAppBackend.Service.Services.Abstractions;
-using WalletAppBackend.Service.Helpers;
 using WalletAppBackend.Service.Models.Requests;
 
 namespace WalletAppBackend.Service.Services
@@ -27,9 +20,9 @@ namespace WalletAppBackend.Service.Services
             _mapper = mapper;
         }
 
-        public async Task<GetTransactionResponse> GetByIdAsync(Guid id)
+        public async Task<GetTransactionResponse> GetByIdAsync(GetTransactionRequest request)
         {
-            var transactionEntity = await _dbRepository.GetByIdAsync<TransactionEntity>(id);
+            var transactionEntity = await _dbRepository.GetByIdAsync<TransactionEntity>(request.Id);
 
             if (transactionEntity != null)
             {
@@ -41,9 +34,9 @@ namespace WalletAppBackend.Service.Services
             throw new Helpers.KeyNotFoundException("Transaction didn't found");
         }
 
-        public async Task<GetAllTransactionsResponse> GetAllByUserIdAsync(Guid userId)
+        public async Task<GetAllTransactionsResponse> GetAllByUserIdAsync(GetAllTransactionsByUserIdRequest request)
         {
-            var listTransactionEntity = await _dbRepository.GetAllByUserIdAsync<TransactionEntity>(userId);
+            var listTransactionEntity = await _dbRepository.GetAllByUserIdAsync<TransactionEntity>(request.UserId);
 
             if (listTransactionEntity != null)
             {
@@ -101,7 +94,7 @@ namespace WalletAppBackend.Service.Services
 
         }
 
-        private string ComputeDescription(this CreateTransactionRequest request, string senderName)
+        private string ComputeDescription(CreateTransactionRequest request, string senderName)
         {
             var senderUsername = request.UserId == request.SenderId ? "" : senderName;
 

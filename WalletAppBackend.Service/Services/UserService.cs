@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
-using Microsoft.Extensions.Configuration;
 using WalletAppBackend.Infrastructure.DataAccess.Contracts;
 using WalletAppBackend.Infrastructure.DataAccess.Implementation.Entities;
 using WalletAppBackend.Service.Helpers;
 using WalletAppBackend.Service.Models;
+using WalletAppBackend.Service.Models.Requests;
 using WalletAppBackend.Service.Models.Responses;
 using WalletAppBackend.Service.Services.Abstractions;
 
@@ -13,16 +13,14 @@ namespace WalletAppBackend.Service.Services
     {
         private readonly IDbRepository _dbRepository;
         private readonly IMapper _mapper;
-        private readonly IConfiguration _configuration;
         private readonly ICardBalanceService _cardBalanceService;
         private readonly IDailyPointsService _dailyPointsService;
 
-        public UserService(IDbRepository userRepository, IMapper mapper, IConfiguration configuration, ICardBalanceService cardBalanceService, IDailyPointsService dailyPointsService)
+        public UserService(IDbRepository userRepository, IMapper mapper, ICardBalanceService cardBalanceService, IDailyPointsService dailyPointsService)
             : base()
         {
             _dbRepository = userRepository;
             _mapper = mapper;
-            _configuration = configuration;
             _cardBalanceService = cardBalanceService;
             _dailyPointsService = dailyPointsService;
         }
@@ -47,9 +45,9 @@ namespace WalletAppBackend.Service.Services
             throw new Helpers.KeyNotFoundException();
         }
 
-        public async Task<User> GetByIdAsync(Guid id)
+        public async Task<User> GetByIdAsync(GetUserRequest request)
         {
-            var user = await _dbRepository.GetByIdAsync<UserEntity>(id);
+            var user = await _dbRepository.GetByIdAsync<UserEntity>(request.Id);
 
             if (user != null)
             {
@@ -61,9 +59,9 @@ namespace WalletAppBackend.Service.Services
             throw new Helpers.KeyNotFoundException("User didn't found");
         }
 
-        public async Task<CreateUserResponses> AddAsync(string username)
+        public async Task<CreateUserResponses> AddAsync(CreateUserRequest request)
         {
-            var user = _dbRepository.GetByUsernameAsync<UserEntity>(username);
+            var user = _dbRepository.GetByUsernameAsync<UserEntity>(request.Username);
 
             if (user == null)
             {
@@ -81,8 +79,10 @@ namespace WalletAppBackend.Service.Services
                 var userEntity = new UserEntity()
                 {
                     Id = userId,
-                    Username = username,
+                    Username = request.Username,
                     IconLink = "https://drive.google.com/file/d/1jd6nssk0Vg9Y0_DZA4i1LBSiFvf-tXvz/view?usp=sharing", //Temporary solution
+                    Password = request.Password,
+                    IsAdmin = request.IsAdmin,
                     CardBalance = cardBalanceEntity,
                     Transactions = new List<TransactionEntity>()
                 };
@@ -92,7 +92,7 @@ namespace WalletAppBackend.Service.Services
                 if (userEntity != null)
                 {
                     var result = _mapper.Map<User>(newUser);
-                    result.DailyPoints = _dailyPointsService.GetByDayAsync().Result.DailyPoints.Points;
+                    result.DailyPoints = _dailyPointsService.GetByDayAsync().Result.DailyPoints.Points.ToString();
 
                     return new CreateUserResponses() { User = result };
                 }
