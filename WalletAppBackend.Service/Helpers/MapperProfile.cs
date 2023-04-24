@@ -45,6 +45,7 @@ namespace WalletAppBackend.Service.Helpers
                 .ForMember(dst => dst.Id, opt => opt.MapFrom(src => src.Id))
                 .ForMember(dst => dst.MaxLimit, opt => opt.MapFrom(src => src.MaxLimit))
                 .ForMember(dst => dst.Balance, opt => opt.MapFrom(src => src.Balance))
+                .ForMember(dst => dst.Available, opt => opt.MapFrom(src => src.MaxLimit - src.Balance))
                 .ForMember(dst => dst.UserId, opt => opt.MapFrom(src => src.UserId))
                 .ForMember(dst => dst.User, opt => opt.MapFrom(src => src.User))
                 .ForMember(dst => dst.PaymentMessage, opt => opt.MapFrom((src => src.PaymentMessage)));
