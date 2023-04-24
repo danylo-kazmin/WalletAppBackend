@@ -34,18 +34,20 @@ namespace WalletAppBackend.Service.Services
             throw new Helpers.KeyNotFoundException("CardBalance didn't found");
         }
 
-        public async Task<CardBalance> AddAsync(Guid userId, decimal amount = 1500)
+        public async Task<CardBalance> AddAsync(Guid userId, int maxLimit = 1500)
         {
-            var cardBalance = await _dbRepository.GetByUserIdAsync<CardBalanceEntity>(userId);
+            var listCardBalance = await _dbRepository.GetAllByUserIdAsync<CardBalanceEntity>(userId);
+            var cardBalance = listCardBalance.FirstOrDefault();
 
-            if(cardBalance == null)
+            if (cardBalance == null)
             {
                 var cardBalanceEntity = new CardBalanceEntity()
                 {
                     Id = Guid.NewGuid(),
-                    Balance = GetRandomNumber(),
-                    MaxLimit = amount,
-                    UserId = userId
+                    Balance = GetRandomNumber(maxLimit),
+                    MaxLimit = maxLimit,
+                    UserId = userId,
+                    PaymentMessage = GetPaymentMessage()
                 };
 
                 var newCardBalance = await _dbRepository.AddAsync(cardBalanceEntity);
@@ -53,6 +55,7 @@ namespace WalletAppBackend.Service.Services
                 if(newCardBalance != null)
                 {
                     var result = _mapper.Map<CardBalance>(cardBalance);
+
                     return result;
                 }
 
@@ -62,12 +65,17 @@ namespace WalletAppBackend.Service.Services
             throw new AppException("CardBalance for this user is already in exist");
         }
 
-        private decimal GetRandomNumber(int max = 1500)
+        private decimal GetRandomNumber(int maxNumber)
         {
             Random rnd = new Random();
-            var randomDecimal = Convert.ToDecimal(rnd.NextDouble() * max);
+            var randomDecimal = Convert.ToDecimal(rnd.NextDouble() * maxNumber);
 
             return randomDecimal;
+        }
+
+        private string GetPaymentMessage()
+        {
+            return $"You've paid your {DateTime.Now.ToString("MMMM")} balance.";
         }
     }
 }

@@ -19,11 +19,10 @@ namespace WalletAppBackend.Service.Services
             _mapper = mapper;
         }
 
-        public async Task<GetDailyPointsResponse> GetByDayAsync(int dayOfSeasone)
+        public async Task<GetDailyPointsResponse> GetByDayAsync()
         {
-            var dailyPoints = await _dbRepository.GetByDayAsync<DailyPointsEntity>(dayOfSeasone);
-
-            dailyPoints.Points = RoundPoints(dailyPoints.Points);
+            var currentDay = GetDaysSinceSeasonStart();
+            var dailyPoints = await _dbRepository.GetByDayAsync<DailyPointsEntity>(currentDay);
 
             if (dailyPoints != null)
             {
@@ -48,7 +47,6 @@ namespace WalletAppBackend.Service.Services
                     Id = Guid.NewGuid(),
                     Points = dailyPoints,
                     DayOfSeasone = dayOfSeasone + 1,
-                    UserId = userId,
                 });
             }
 
@@ -69,6 +67,26 @@ namespace WalletAppBackend.Service.Services
             }
 
             throw new Exception("Server didn't add the new DailyPoints");
+        }
+
+        private int GetDaysSinceSeasonStart()
+        {
+            var seasonStartDate = GetSeasonStartDate();
+
+            return (int)(DateTime.Now.Date - seasonStartDate.Date).TotalDays + 1;
+        }
+
+        private DateTime GetSeasonStartDate()
+        {
+            var currentDate = DateTime.Now.Date;
+
+            return currentDate.Month switch
+            {
+                1 or 2 or 12 => new DateTime(currentDate.Year, 12, 1),
+                3 or 4 or 5 => new DateTime(currentDate.Year, 3, 1),
+                6 or 7 or 8 => new DateTime(currentDate.Year, 6, 1),
+                _ => new DateTime(currentDate.Year, 9, 1),
+            };
         }
 
         private List<long> CreateDailyPointsForSeason(int daysInSeason)
@@ -100,13 +118,6 @@ namespace WalletAppBackend.Service.Services
             }
 
             return previousPoints;
-        }
-
-        private long RoundPoints(long points)
-        {
-            var roundedPoints = (long)Math.Round((decimal)points);
-
-            return points >= 1000 ? (roundedPoints / 1000 * 1000) : roundedPoints;
         }
     }
 }
