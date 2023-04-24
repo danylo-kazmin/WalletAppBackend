@@ -1,9 +1,4 @@
-﻿using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Microsoft.OpenApi.Models;
+﻿using Microsoft.OpenApi.Models;
 using System.Text.Json.Serialization;
 using WalletAppBackend.API.Helpers;
 using WalletAppBackend.Infrastructure.DataAccess.Contracts;
@@ -36,6 +31,9 @@ namespace WalletAppBackend.API
             services.Configure<AppSettings>(_configuration.GetSection("AppSettings"));
 
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<ITransactionService, TransactionService>();
+            services.AddScoped<ICardBalanceService, CardBalanceService>();
+            services.AddScoped<IDailyPointsService, DailyPointsService>();
             services.AddScoped(typeof(IDbRepository), typeof(DbRepository));
 
             services.AddAutoMapper(typeof(MapperProfile));
