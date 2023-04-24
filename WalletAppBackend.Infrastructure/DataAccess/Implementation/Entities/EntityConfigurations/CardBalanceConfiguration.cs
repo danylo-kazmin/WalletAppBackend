@@ -13,7 +13,7 @@ namespace WalletAppBackend.Infrastructure.DataAccess.Implementation.EntityConfig
             builder.Property(p => p.Id).IsRequired();
             builder.Property(p => p.MaxLimit).IsRequired().HasColumnType("money");
             builder.Property(p => p.Balance).IsRequired().HasColumnType("money");
-            builder.Property(p => p.UserId).IsRequired(false).HasColumnType("uniqueidentifier");
+            builder.Property(p => p.UserId).IsRequired().HasColumnType("uniqueidentifier");
 
             builder.HasOne(с => с.User)
                 .WithOne(p => p.CardBalance)
