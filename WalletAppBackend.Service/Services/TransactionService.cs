@@ -101,7 +101,7 @@ namespace WalletAppBackend.Service.Services
 
         }
 
-        private string ComputeDescription(this CreateTransactionRequest request, string senderName)
+        private string ComputeDescription(CreateTransactionRequest request, string senderName)
         {
             var senderUsername = request.UserId == request.SenderId ? "" : senderName;
 

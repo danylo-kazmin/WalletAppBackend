@@ -13,16 +13,14 @@ namespace WalletAppBackend.Service.Services
     {
         private readonly IDbRepository _dbRepository;
         private readonly IMapper _mapper;
-        private readonly IConfiguration _configuration;
         private readonly ICardBalanceService _cardBalanceService;
         private readonly IDailyPointsService _dailyPointsService;
 
-        public UserService(IDbRepository userRepository, IMapper mapper, IConfiguration configuration, ICardBalanceService cardBalanceService, IDailyPointsService dailyPointsService)
+        public UserService(IDbRepository userRepository, IMapper mapper, ICardBalanceService cardBalanceService, IDailyPointsService dailyPointsService)
             : base()
         {
             _dbRepository = userRepository;
             _mapper = mapper;
-            _configuration = configuration;
             _cardBalanceService = cardBalanceService;
             _dailyPointsService = dailyPointsService;
         }
@@ -92,7 +90,7 @@ namespace WalletAppBackend.Service.Services
                 if (userEntity != null)
                 {
                     var result = _mapper.Map<User>(newUser);
-                    result.DailyPoints = _dailyPointsService.GetByDayAsync().Result.DailyPoints.Points;
+                    result.DailyPoints = _dailyPointsService.GetByDayAsync().Result.DailyPoints.Points.ToString();
 
                     return new CreateUserResponses() { User = result };
                 }
