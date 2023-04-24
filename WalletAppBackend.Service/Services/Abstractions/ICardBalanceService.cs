@@ -6,6 +6,6 @@ namespace WalletAppBackend.Service.Services.Abstractions
     public interface ICardBalanceService
     {
         Task<GetCardBalanceResponse> GetByIdAsync(Guid id);
-        Task<CardBalance> AddAsync(Guid userId, decimal amount = 1500);
+        Task<CardBalance> AddAsync(Guid userId, int amount = 1500);
     }
 }
