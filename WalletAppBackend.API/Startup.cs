@@ -9,6 +9,8 @@ using WalletAppBackend.Service.Helpers;
 using WalletAppBackend.API.Configuration;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Hosting.Server;
+using Microsoft.Extensions.Options;
+using System.Text.Json;
 
 namespace WalletAppBackend.API
 {
@@ -27,9 +29,11 @@ namespace WalletAppBackend.API
                 options.UseSqlServer(_configuration.GetConnectionString("AppSettings")));
 
             services.AddCors();
-            services.AddControllers().AddJsonOptions(x =>
+            services.AddControllers().AddJsonOptions(options =>
             {
-                x.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+                options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+                options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
+                options.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
             });
 
             services.Configure<AppSettings>(_configuration.GetSection("AppSettings"));
