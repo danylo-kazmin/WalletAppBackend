@@ -4,7 +4,11 @@ namespace WalletAppBackend.Service.Models.Requests
 {
     public class CreateUserRequest
     {
-        [Required (ErrorMessage = "Name not specified!")]
+        [Required (ErrorMessage = "Username not specified!")]
         public string Username { get; set; }
+        [Required(ErrorMessage = "Password not specified!")]
+        public string Password { get; set; }
+        [Required(ErrorMessage = "IsAdmin not specified!")]
+        public bool IsAdmin { get; set; }
     }
 }

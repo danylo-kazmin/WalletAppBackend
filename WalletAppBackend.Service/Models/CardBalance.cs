@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
 
 namespace WalletAppBackend.Service.Models
 {
@@ -11,6 +7,7 @@ namespace WalletAppBackend.Service.Models
         public Guid Id { get; set; }
         public decimal MaxLimit { get; set; }
         public decimal Balance { get; set; }
+        public string PaymentMessage { get; set; }
         public Guid UserId { get; set; }
         public User User { get; set; }
     }

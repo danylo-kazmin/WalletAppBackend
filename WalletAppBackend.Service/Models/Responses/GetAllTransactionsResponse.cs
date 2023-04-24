@@ -2,7 +2,7 @@
 
 namespace WalletAppBackend.Service.Models.Responses
 {
-    public class GetAllTransactionResponse
+    public class GetAllTransactionsResponse
     {
         public List<Transaction> Transactions { get; set; }
     }

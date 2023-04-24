@@ -10,7 +10,6 @@ namespace WalletAppBackend.Service.Models
     {
         public Guid Id { get; set; }
         public string Points { get; set; }
-        public Guid UserId { get; set; }
-        public User User { get; set; }
+        public int DayOfSeasone { get; set; }
     }
 }

@@ -4,23 +4,21 @@ namespace WalletAppBackend.Service.Models.Requests
 {
     public class CreateTransactionRequest
     {
-        [Required]
+        [RegularExpression("^(Payment|Credit)$", ErrorMessage = "Type must be either 'Payment' or 'Credit'")]
         public string Type { get; set; }
         [Required]
         public decimal Amount { get; set; }
-        [Required(ErrorMessage = "Username not specified!")]
-        public string Username { get; set; }
         [Required]
         public string Description { get; set; }
         [Required]
         public DateTimeOffset Date { get; set; }
-        [Required]
+        [RegularExpression("(Pending|Approved)", ErrorMessage = "Status must be 'Pending' or 'Approved'")]
         public string Status { get; set; }
         [Required]
         public string IconLink { get; set; }
         [Required]
         public Guid SenderId { get; set; }
         [Required]
-        public Guid OwnerId { get; set; }
+        public Guid UserId { get; set; }
     }
 }
