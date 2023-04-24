@@ -14,7 +14,8 @@ namespace WalletAppBackend.Service.Helpers
                 .ForMember(dst => dst.IsAdmin, opt => opt.MapFrom(src => src.IsAdmin))
                 .ForMember(dst => dst.IconLink, opt => opt.MapFrom(src => src.IconLink))
                 .ForMember(dst => dst.Transactions, opt => opt.MapFrom(src => src.Transactions))
-                .ForMember(dst => dst.CardBalance, opt => opt.MapFrom(src => src.CardBalance));
+                .ForMember(dst => dst.CardBalance, opt => opt.MapFrom(src => src.CardBalance))
+                .ForMember(dst => dst.TrustedPersons, opt => opt.MapFrom(src => src.TrustedPersons));
 
             CreateMap<TransactionEntity, Transaction>()
                 .ForMember(dst => dst.Id, opt => opt.MapFrom(src => src.Id))
@@ -23,10 +24,14 @@ namespace WalletAppBackend.Service.Helpers
                 .ForMember(dst => dst.Description, opt => opt.MapFrom(src => src.Description))
                 .ForMember(dst => dst.Date, opt => opt.MapFrom(src => src.Date))
                 .ForMember(dst => dst.Status, opt => opt.MapFrom(src => src.Status))
-                .ForMember(dst => dst.IconLink, opt => opt.MapFrom(src => src.IconLink))
-                .ForMember(dst => dst.Sender, opt => opt.MapFrom(src => src.Sender))
                 .ForMember(dst => dst.User, opt => opt.MapFrom(src => src.User))
-                .ForMember(dst => dst.Name, opt => opt.MapFrom(src => src.Type));
+                .ForMember(dst => dst.TrustedPerson, opt => opt.MapFrom(src => src.TrustedPerson));
+
+            CreateMap<TrustedPersonEntity, TrustedPerson>()
+                .ForMember(dst => dst.Id, opt => opt.MapFrom(src => src.Id))
+                .ForMember(dst => dst.Username, opt => opt.MapFrom(src => src.Username))
+                .ForMember(dst => dst.UserId, opt => opt.MapFrom(src => src.UserId))
+                .ForMember(dst => dst.User, opt => opt.MapFrom(src => src.User));
 
             CreateMap<DailyPointsEntity, DailyPoints>()
                 .ForMember(dst => dst.Id, opt => opt.MapFrom(src => src.Id))

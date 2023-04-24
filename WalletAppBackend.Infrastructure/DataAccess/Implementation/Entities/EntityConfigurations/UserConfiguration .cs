@@ -8,21 +8,26 @@ namespace WalletAppBackend.Infrastructure.DataAccess.Implementation.EntityConfig
     {
         public void Configure(EntityTypeBuilder<UserEntity> builder)
         {
-            builder.ToTable("User").HasKey(x => x.Id);
-            builder.Property(x => x.Id).IsRequired().HasColumnType("uniqueidentifier");
-            builder.Property(x => x.IconLink).IsRequired().HasColumnName("IconLink").HasColumnType("nvarchar(255)");
-            builder.Property(x => x.Username).IsRequired().HasColumnName("Username").HasMaxLength(50);
-            builder.Property(x => x.Password).IsRequired().HasColumnName("Password").HasMaxLength(50);
-            builder.Property(x => x.IsAdmin).IsRequired().HasColumnName("IsAdmin").HasColumnType("bit");
+            builder.ToTable("User").HasKey(u => u.Id);
+            builder.Property(u => u.Username).IsRequired().HasColumnName("Username").HasColumnType("nvarchar(50)");
+            builder.Property(u => u.IconLink).IsRequired().HasColumnName("IconLink").HasColumnType("nvarchar(255)");
+            builder.Property(u => u.Password).IsRequired().HasColumnName("Password").HasColumnType("nvarchar(50)");
+            builder.Property(u => u.IsAdmin).IsRequired().HasColumnName("IsAdmin").HasColumnType("bit");
 
             builder.HasMany(u => u.Transactions)
-                .WithOne()
+                .WithOne(t => t.User)
                 .HasForeignKey(t => t.UserId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Cascade);
 
-            builder.Navigation(u => u.Transactions)
-                .UsePropertyAccessMode(PropertyAccessMode.Property)
-                .IsRequired(false);
+            builder.HasOne(u => u.CardBalance)
+                .WithOne(cb => cb.User)
+                .HasForeignKey<CardBalanceEntity>(cb => cb.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.HasMany(u => u.TrustedPersons)
+                .WithOne(tp => tp.User)
+                .HasForeignKey(tp => tp.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

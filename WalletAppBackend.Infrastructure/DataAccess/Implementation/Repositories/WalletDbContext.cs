@@ -14,18 +14,10 @@ namespace WalletAppBackend.Infrastructure.DataAccess.Implementation.Repositories
 
         public WalletDbContext(DbContextOptions<WalletDbContext> options) : base(options)
         {
-            Database.EnsureCreated();
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            IConfigurationRoot configuration = new ConfigurationBuilder()
-                .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
-                .AddJsonFile("appsettings.json")
-                .Build();
-
-            string connectionString = configuration.GetConnectionString("AppSettings:ConnectionString");
-            optionsBuilder.UseSqlServer(connectionString);
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -35,7 +27,7 @@ namespace WalletAppBackend.Infrastructure.DataAccess.Implementation.Repositories
             modelBuilder.ApplyConfiguration(new TransactionConfiguration());
             modelBuilder.ApplyConfiguration(new UserConfiguration());
             modelBuilder.ApplyConfiguration(new DailyPointsConfiguration());
-            modelBuilder.ApplyConfiguration(new UserConfiguration());
+            modelBuilder.ApplyConfiguration(new CardBalanceConfiguration());
         }
 
         public async Task<int> SaveChangesAsync()

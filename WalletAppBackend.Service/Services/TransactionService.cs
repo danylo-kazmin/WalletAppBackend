@@ -57,24 +57,22 @@ namespace WalletAppBackend.Service.Services
 
         public async Task<Transaction> AddAsync(CreateTransactionRequest request)
         {
-            var userEntity = await _dbRepository.GetByIdAsync<UserEntity>(request.UserId);
-            var senderEntity = await _dbRepository.GetByIdAsync<UserEntity>(request.SenderId);
+            var userEntity = await _dbRepository.GetByIdAsync<UserEntity>(request.User.Id);
+            var trustedPersons = await _dbRepository.GetAllAsync<TrustedPersonEntity>();
+            var trustedPersonEntity = trustedPersons.Where(t => t.UserId == userEntity.Id).FirstOrDefault();
 
-            if(userEntity != null && senderEntity != null)
+            if (userEntity != null && trustedPersonEntity != null)
             {
                 var transactionEntity = new TransactionEntity
                 {
                     Id = Guid.NewGuid(),
                     Type = request.Type,
                     Amount = request.Amount,
-                    Name = senderEntity.Username,
-                    Description = ComputeDescription(request, senderEntity.Username),
+                    Name = trustedPersonEntity.Username,
+                    Description = ComputeDescription(request),
                     Date = request.Date,
                     Status = request.Status,
-                    IconLink = request.IconLink,
-                    SenderId = request.SenderId,
-                    UserId = request.UserId,
-                    Sender = senderEntity,
+                    TrustedPerson = trustedPersonEntity,
                     User = userEntity
                 };
 
@@ -94,9 +92,9 @@ namespace WalletAppBackend.Service.Services
 
         }
 
-        private string ComputeDescription(CreateTransactionRequest request, string senderName)
+        private string ComputeDescription(CreateTransactionRequest request)
         {
-            var senderUsername = request.UserId == request.SenderId ? "" : senderName;
+            var senderUsername = request.User.Id == request.TrustedPerson.Id ? "" : request.TrustedPerson.Username;
 
             var dateDescription = request.Date >= DateTime.Today.AddDays(-7) ? request.Date.ToString("dddd") : request.Date.ToString("dd.MM.yyyy");
 

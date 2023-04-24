@@ -84,7 +84,8 @@ namespace WalletAppBackend.Service.Services
                     Password = request.Password,
                     IsAdmin = request.IsAdmin,
                     CardBalance = cardBalanceEntity,
-                    Transactions = new List<TransactionEntity>()
+                    Transactions = new List<TransactionEntity>(),
+                    TrustedPersons = CreateTrustedPersonsList(request)
                 };
 
                 var newUser = await _dbRepository.AddAsync(userEntity);
@@ -101,6 +102,34 @@ namespace WalletAppBackend.Service.Services
             }
 
             throw new AppException("Username or email is already in user");
+        }
+
+        private List<TrustedPersonEntity>CreateTrustedPersonsList(CreateUserRequest request)
+        {
+            var trustedPersons = new List<TrustedPersonEntity>();
+
+            foreach (var trustedUser in request.TrustedPersons)
+            {
+                var newTrustedUser = new UserEntity()
+                {
+                    Id = trustedUser.Id,
+                    Username = trustedUser.Username,
+                    IsAdmin = trustedUser.IsAdmin,
+                    IconLink = trustedUser.IconLink
+                };
+
+                var trustedPersonEntity = new TrustedPersonEntity()
+                {
+                    Id = Guid.NewGuid(),
+                    Username = trustedUser.Username,
+                    User = newTrustedUser,
+                    UserId = trustedUser.Id,
+                };
+
+                trustedPersons.Add(trustedPersonEntity);
+            }
+
+            return trustedPersons;
         }
 
     }
