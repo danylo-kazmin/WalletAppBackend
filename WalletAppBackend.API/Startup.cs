@@ -7,6 +7,8 @@ using WalletAppBackend.Service.Services;
 using WalletAppBackend.Service.Services.Abstractions;
 using WalletAppBackend.Service.Helpers;
 using WalletAppBackend.API.Configuration;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Hosting.Server;
 
 namespace WalletAppBackend.API
 {
@@ -21,7 +23,9 @@ namespace WalletAppBackend.API
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<WalletDbContext>();
+            services.AddDbContext<WalletDbContext>(options =>
+                options.UseSqlServer(_configuration.GetConnectionString("AppSettings")));
+
             services.AddCors();
             services.AddControllers().AddJsonOptions(x =>
             {
