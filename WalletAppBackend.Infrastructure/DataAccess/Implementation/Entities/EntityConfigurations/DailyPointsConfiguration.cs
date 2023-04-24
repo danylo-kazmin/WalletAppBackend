@@ -9,12 +9,8 @@ namespace WalletAppBackend.Infrastructure.DataAccess.Implementation.EntityConfig
         public void Configure(EntityTypeBuilder<DailyPointsEntity> builder)
         {
             builder.ToTable("DailyPoints").HasKey(p => p.Id);
-            builder.Property(p => p.Points).IsRequired().HasColumnName("Points").HasColumnType("int");
-
-            builder.HasOne(d => d.User)
-                .WithOne(u => u.DailyPoints)
-                .HasForeignKey<DailyPointsEntity>(d => d.UserId)
-                .OnDelete(DeleteBehavior.Restrict);
+            builder.Property(p => p.Points).IsRequired().HasColumnName("Points").HasColumnType("bigint");
+            builder.Property(p => p.DayOfSeasone).IsRequired().HasColumnName("DayOfSeasone").HasColumnType("int");
         }
     }
 }

@@ -7,7 +7,7 @@ using WalletAppBackend.Infrastructure.DataAccess.Contracts;
 
 namespace WalletAppBackend.Infrastructure.DataAccess.Implementation.Entities
 {
-    public class TransactionEntity : IEntity
+    public class TransactionEntity : IEntity, IEntityForUser
     {
         public Guid Id { get; set; }
         public string Type { get; set; }
@@ -18,8 +18,8 @@ namespace WalletAppBackend.Infrastructure.DataAccess.Implementation.Entities
         public string Status { get; set; }
         public string IconLink { get; set; }
         public Guid SenderId { get; set; }
-        public Guid OwnerId { get; set; }
+        public Guid UserId { get; set; }
         public UserEntity Sender { get; set; }
-        public UserEntity Owner { get; set; }
+        public UserEntity User { get; set; }
     }
 }
