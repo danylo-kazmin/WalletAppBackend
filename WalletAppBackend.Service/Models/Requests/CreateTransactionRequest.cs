@@ -15,10 +15,8 @@ namespace WalletAppBackend.Service.Models.Requests
         [RegularExpression("(Pending|Approved)", ErrorMessage = "Status must be 'Pending' or 'Approved'")]
         public string Status { get; set; }
         [Required]
-        public string IconLink { get; set; }
+        public TrustedPerson TrustedPerson { get; set; }
         [Required]
-        public Guid SenderId { get; set; }
-        [Required]
-        public Guid UserId { get; set; }
+        public User User { get; set; }
     }
 }
