@@ -16,10 +16,9 @@ namespace WalletAppBackend.Infrastructure.DataAccess.Implementation.Entities
         public string Description { get; set; }
         public DateTimeOffset Date { get; set; }
         public string Status { get; set; }
-        public string IconLink { get; set; }
         public Guid SenderId { get; set; }
         public Guid UserId { get; set; }
-        public UserEntity Sender { get; set; }
         public UserEntity User { get; set; }
+        public TrustedPersonEntity TrustedPerson { get; set; }
     }
 }

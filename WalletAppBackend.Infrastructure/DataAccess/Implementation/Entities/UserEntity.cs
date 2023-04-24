@@ -11,5 +11,6 @@ namespace WalletAppBackend.Infrastructure.DataAccess.Implementation.Entities
         public bool IsAdmin { get; set; }
         public List<TransactionEntity> Transactions { get; set; }
         public CardBalanceEntity CardBalance { get; set; }
+        public List<TrustedPersonEntity> TrustedPersons { get; set; }
     }
 }
