@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using WalletAppBackend.Infrastructure.DataAccess.Contracts;
+using WalletAppBackend.Infrastructure.DataAccess.Implementation.Entities;
 
 namespace WalletAppBackend.Infrastructure.DataAccess.Implementation.Repositories
 {
@@ -12,30 +13,44 @@ namespace WalletAppBackend.Infrastructure.DataAccess.Implementation.Repositories
             _context = context;
         }
 
-        public async Task<IEnumerable<T>> GetAll<T>()
+        public async Task<IEnumerable<T>> GetAllAsync<T>()
             where T : class, IEntity
         {
             var result = await _context.Set<T>().AsQueryable().ToListAsync();
 
-            if (result == null)
-            {
-                return null;
-            }
+            return result;
+        }
+
+        public async Task<T> GetByIdAsync<T>(Guid id)
+            where T : class, IEntity
+        {
+            var result = await _context.Set<T>().AsQueryable().FirstOrDefaultAsync(e => e.Id == id);
 
             return result;
         }
 
-        public async Task<T> Get<T>(Guid id)
+        public async Task<T> GetByDayAsync<T>(int dayOfSeasone)
             where T : class, IEntity
         {
-            var entity = await _context.Set<T>().AsQueryable().FirstOrDefaultAsync(e => e.Id == id);
+            var result = await _context.Set<DailyPointsEntity>().AsQueryable().FirstOrDefaultAsync(e => e.DayOfSeasone == dayOfSeasone);
 
-            if (entity == null)
-            {
-                return null;
-            }
+            return result as T;
+        }
 
-            return entity;
+        public async Task<T> GetByUsernameAsync<T>(string username)
+            where T : class, IEntity
+        {
+            var result = await _context.Set<UserEntity>().AsQueryable().FirstOrDefaultAsync(e => e.Username == username);
+
+            return result as T;
+        }
+
+        public async Task<List<T>> GetAllByUserIdAsync<T>(Guid userId) 
+            where T : class, IEntityForUser
+        {
+            var result = await _context.Set<T>().AsQueryable().Where(e => e.UserId == userId).ToListAsync();
+
+            return result;
         }
 
         public async Task<T> AddAsync<T>(T newEntity)
@@ -50,6 +65,20 @@ namespace WalletAppBackend.Infrastructure.DataAccess.Implementation.Repositories
             }
 
             return null;
+        }
+
+        public async Task<List<T>> AddRangeAsync<T>(List<T> entities) 
+            where T : class, IEntity
+        {
+            if (entities == null || entities.Count == 0)
+            {
+                return null;
+            }
+
+            await _context.Set<T>().AddRangeAsync(entities);
+            await SaveChangesAsync();
+
+            return entities;
         }
 
         public async Task<bool> RemoveAsync<T>(Guid id)

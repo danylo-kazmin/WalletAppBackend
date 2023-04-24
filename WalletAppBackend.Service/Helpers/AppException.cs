@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Globalization;
 
-namespace WalletAppBackend.API.Helpers
+namespace WalletAppBackend.Service.Helpers
 {
     public class AppException : Exception
     {

@@ -9,7 +9,7 @@ namespace WalletAppBackend.Service.Models
     public class DailyPoints
     {
         public Guid Id { get; set; }
-        public int Points { get; set; }
-        public User User { get; set; }
+        public string Points { get; set; }
+        public int DayOfSeasone { get; set; }
     }
 }
