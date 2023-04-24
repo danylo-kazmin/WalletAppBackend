@@ -10,7 +10,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WalletAppBackend.Service", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WalletAppBackend.Infrastructure", "WalletAppBackend.Infrastructure\WalletAppBackend.Infrastructure.csproj", "{8B82B287-7EB6-414D-B9A7-D8253E2FCB40}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WalletAppBackend.API", "WalletAppBackend.API\WalletAppBackend.API.csproj", "{459D2790-7A01-4ADC-83C3-C8D936F012F0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WalletAppBackend.API", "WalletAppBackend.API\WalletAppBackend.API.csproj", "{459D2790-7A01-4ADC-83C3-C8D936F012F0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
